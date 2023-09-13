@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "devvit-template",
+  "version": "0.0.0",
+  "license": "BSD-3-Clause",
+  "type": "module",
+  "config": {
+    "testSubreddit": "pitchforkassistant"
+  },
+  "scripts": {
+    "test": "npm run test:unit",
+    "test:unit": "vitest --run",
+    "lint": "eslint . --ext .ts"
+  },
+  "dependencies": {
+    "@devvit/public-api": "0.10.4",
+    "devvit-helpers": "^0.2.10"
+  },
+  "devDependencies": {
+    "@devvit/tsconfig": "0.10.4",
+    "@typescript-eslint/eslint-plugin": "^6.6.0",
+    "@typescript-eslint/parser": "^6.6.0",
+    "eslint": "^8.49.0",
+    "eslint-plugin-vitest": "^0.3.1",
+    "typescript": "4.9.3",
+    "vitest": "0.31.1"
+  }
+}
