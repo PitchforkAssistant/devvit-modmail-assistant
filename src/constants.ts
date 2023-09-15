@@ -6,6 +6,7 @@ export const LABELS = {
     ADMINS: "Admins",
     SUBREDDITS: "Subreddits",
     CONTRIBUTORS: "Contributors",
+    SENT: "Include Sent",
     AUTOGEN: "Include Auto-Generated",
 };
 
@@ -14,6 +15,7 @@ export const HELP_TEXTS = {
     ADMINS: "Should modmails from admins be automatically highlighted?",
     CONTRIBUTORS: "Should modmails from approved contributors be automatically highlighted?",
     SUBREDDITS: "Should modmails from other subreddits be automatically highlighted?",
+    SENT: "Should modmails sent by the subreddit be highlighted if the recipient matches the above criteria?",
     AUTOGEN: "Should automatically generated modmails even be considered for highlighting?",
 };
 
@@ -22,5 +24,6 @@ export const DEFAULTS = {
     ADMINS: true,
     SUBREDDITS: true,
     CONTRIBUTORS: false,
+    SENT: true,
     AUTOGEN: false,
 };
