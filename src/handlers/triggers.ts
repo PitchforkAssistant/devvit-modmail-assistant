@@ -33,7 +33,7 @@ export async function onModMail (event: OnTriggerEvent<ModMail>, context: Trigge
             return;
         }
         // If the participating subreddit exists and isn't the owner subreddit, then it's a sent modmail.
-        if (modmail.participantSubreddit && modmail.participantSubreddit.id !== modmail.conversation.subreddit?.id) {
+        if (modmail.conversation.conversationType === "sr_sr" && modmail.conversation.subreddit?.id !== (await context.reddit.getCurrentSubreddit()).id) {
             console.log(`Ignoring modmail sent to subreddit: ${JSON.stringify(event)}`);
             return;
         }
