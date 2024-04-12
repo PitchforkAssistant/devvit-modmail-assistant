@@ -13,16 +13,17 @@
     "lint": "eslint . --ext .ts"
   },
   "dependencies": {
-    "@devvit/public-api": "0.10.4",
-    "devvit-helpers": "0.2.14"
+    "@devvit/protos": "0.10.18",
+    "@devvit/public-api": "0.10.18",
+    "@devvit/shared-types": "0.10.18",
+    "devvit-helpers": "0.2.39"
   },
   "devDependencies": {
-    "@devvit/tsconfig": "0.10.4",
-    "@typescript-eslint/eslint-plugin": "^6.6.0",
-    "@typescript-eslint/parser": "^6.6.0",
-    "eslint": "^8.49.0",
-    "eslint-plugin-vitest": "^0.3.1",
-    "typescript": "4.9.3",
-    "vitest": "0.31.1"
+    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@typescript-eslint/parser": "^7.6.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vitest": "^0.5.1",
+    "typescript": "^5.4.5",
+    "vitest": "^1.5.0"
   }
 }
