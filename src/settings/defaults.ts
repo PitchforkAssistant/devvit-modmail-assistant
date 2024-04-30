@@ -6,7 +6,7 @@ export const SETTING_DEFAULTS = {
     highlighterNoSents: true,
     highlighterNoAutoGens: false,
     highlighterUsernames: "ModmailAssistant,AnotherUser,YetAnotherUser,AndSoOn",
-    highlighterFlairs: "priority",
+    highlighterFlairs: "f3b3ba72-5bbc-11ee-8d00-fe02b9c3631d,94652820-0711-11ef-bd8e-ba4803bace8a",
     highlighterSubreddits: false,
     archiverEnabled: false,
     archiverNoHighlighteds: true,
