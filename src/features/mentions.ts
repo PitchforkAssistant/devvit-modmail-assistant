@@ -86,6 +86,10 @@ export async function runModmailMentions (reddit: RedditAPIClient, config: AppSe
     }
 
     for (const username of modMentions) {
+        if (username === message.author?.name?.toLowerCase()) {
+            console.log(`runModmailMentions: Ignoring self-mention by ${username}`);
+            continue;
+        }
         try {
             await sendMentionNotification(reddit, username, getModmailPermalink(convo, message) ?? "https://mod.reddit.com/mail/all", message.author?.name);
         } catch (e) {
