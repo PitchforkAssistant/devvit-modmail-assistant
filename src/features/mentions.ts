@@ -56,14 +56,14 @@ export async function runModmailMentions (reddit: RedditAPIClient, config: AppSe
         return;
     }
 
-    if (config.modmailMentionsOnlyMods && !message.author?.isMod && !message.author?.isAdmin) {
-        console.log(`runModmailMentions: Message author ${message.author?.name} can't trigger mentions`);
-        return;
-    }
-
     let modMentions = await findModeratorMentions(reddit, message.bodyMarkdown ?? "");
     if (!modMentions.length) {
         console.log("runModmailMentions: No mentions found");
+        return;
+    }
+
+    if (config.modmailMentionsOnlyMods && !message.author?.isMod && !message.author?.isAdmin) {
+        console.log(`runModmailMentions: Message author ${message.author?.name} can't trigger mentions`);
         return;
     }
 
