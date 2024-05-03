@@ -10,3 +10,11 @@ ModmailAssistant is a Devvit app that provides a few useful Modmail-related tool
 
 * Modmail Mentions  
   This brings username mentions to modmail conversations. Have you ever wanted to ask another mod a question in modmail? Now you can get their attention by /u/-mentioning them, which will send them a private message with a link to the conversation.
+
+## Change Log
+
+This section summarizes the changes made for each published version of the app, unpublished versions are not listed, but you can always view the full changes to the code on [GitHub](https://github.com/PitchforkAssistant/devvit-modmail-assistant).
+
+### 0.1.3
+
+Fixed a bug that prevented the highlighter function from ever running.
