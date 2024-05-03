@@ -13,7 +13,7 @@ export async function runModmailHighlighter (reddit: RedditAPIClient, config: Ap
         console.log("runModmailHighlighter: Conversation has no ID");
         return false;
     }
-    if (convo.numMessages ?? 0 > 1) {
+    if ((convo.numMessages ?? 0) > 1) {
         console.log("runModmailHighlighter: More than one message in conversation, not a new one");
         return false;
     }
