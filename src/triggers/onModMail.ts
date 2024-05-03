@@ -10,6 +10,8 @@ export async function onModMail (event: ModMail, context: TriggerContext) {
         return;
     }
 
+    console.log(`onModMail: ${event.conversationId}/${event.messageId}`);
+
     const convoResponse = await context.reddit.modMail.getConversation({conversationId: event.conversationId, markRead: false});
     if (!convoResponse || !convoResponse.conversation) {
         console.error(`onModMail: Failed to fetch ${event.conversationId}`);
