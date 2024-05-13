@@ -19,6 +19,7 @@ export const SETTING_LABELS: Record<AppSettingName, string> = {
     modmailMentionsEnabled: "Modmail Mentions Enabled",
     modmailMentionsOnlyMods: "Modmail Mentions Only From Mods",
     modmailMentionsOnlyOnce: "Modmail Mentions Limit To One Mention",
+    modmailMentionsNoQuotes: "Modmail Mentions Ignore Quotes",
 };
 
 export const SETTING_HELP_TEXTS: Record<AppSettingName, string> = {
@@ -40,6 +41,7 @@ export const SETTING_HELP_TEXTS: Record<AppSettingName, string> = {
     modmailMentionsEnabled: "Enable the Modmail Mentions feature.",
     modmailMentionsOnlyMods: "Only send out notifications if the username mention is by another moderator. If you disable this, non-moderators will also be able to trigger notifications by mentioning a moderator in a modmail conversation.",
     modmailMentionsOnlyOnce: "Limit the number of notifications sent to a singular moderator to a maximum of one per modmail conversation.",
+    modmailMentionsNoQuotes: "Ignore any mentions that are inside a quote block.",
 };
 
 export const GROUP_LABELS: Record<string, string> = {

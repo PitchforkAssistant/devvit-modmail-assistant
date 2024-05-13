@@ -19,7 +19,8 @@ export type ArchiverSettingName = "archiverEnabled"
 
 export type ModmailMentionsSettingName = "modmailMentionsEnabled"
                                        | "modmailMentionsOnlyMods"
-                                       | "modmailMentionsOnlyOnce";
+                                       | "modmailMentionsOnlyOnce"
+                                       | "modmailMentionsNoQuotes";
 
 export type AppSettingName = HighlighterSettingName | ArchiverSettingName | ModmailMentionsSettingName;
 
@@ -40,6 +41,7 @@ export const SETTING_NAMES: Record<AppSettingName, AppSettingName> = {
     modmailMentionsEnabled: "modmailMentionsEnabled",
     modmailMentionsOnlyMods: "modmailMentionsOnlyMods",
     modmailMentionsOnlyOnce: "modmailMentionsOnlyOnce",
+    modmailMentionsNoQuotes: "modmailMentionsNoQuotes",
 };
 
 export type AppSettingsFormField = Omit<ValidatedStringField, "name"> & {name: AppSettingName}
@@ -75,6 +77,13 @@ export const SETTINGS: AppSettingsFormField[] = [
                 label: SETTING_LABELS.modmailMentionsOnlyOnce,
                 helpText: SETTING_HELP_TEXTS.modmailMentionsOnlyOnce,
                 defaultValue: SETTING_DEFAULTS.modmailMentionsOnlyOnce,
+            },
+            {
+                type: "boolean",
+                name: SETTING_NAMES.modmailMentionsNoQuotes,
+                label: SETTING_LABELS.modmailMentionsNoQuotes,
+                helpText: SETTING_HELP_TEXTS.modmailMentionsNoQuotes,
+                defaultValue: SETTING_DEFAULTS.modmailMentionsNoQuotes,
             },
         ],
     },

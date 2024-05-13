@@ -5,13 +5,18 @@ import {isModerator, getModmailPermalink} from "devvit-helpers";
 // Based on testing, this regex should emulate the behavior of the Reddit username mentions in comments:
 // https://i.imgur.com/yMghWaB.png
 const usernameMentionRegex = /(?<!(\[|\w)\/?u\/)(?<=\b\/?u\/)[a-zA-Z0-9_-]{3,21}(?=\b)/gm;
-export function extractUsernameMentions (text: string): string[] {
+export function extractUniqueUsernameMentions (text: string): string[] {
     const matches = text.matchAll(usernameMentionRegex);
     return [...new Set(Array.from(matches, match => match[0].toLowerCase()))];
 }
 
+const quoteRegex = /^\s*?((\d+\.)|\*|-)?\s*?>.*?$/gm;
+export function removeQuotes (text: string): string {
+    return text.replace(quoteRegex, "");
+}
+
 export async function findModeratorMentions (reddit: RedditAPIClient, text: string, subredditName?: string): Promise<string[]> {
-    const mentions = extractUsernameMentions(text);
+    const mentions = extractUniqueUsernameMentions(text);
 
     if (!mentions.length) {
         return [];
@@ -24,11 +29,14 @@ export async function findModeratorMentions (reddit: RedditAPIClient, text: stri
     return mentions.filter(async username => isModerator(reddit, (await reddit.getCurrentSubreddit()).name, username));
 }
 
-export function countUsernameMentions (convo: ConversationData): Record<string, number> {
+export function countUsernameMentions (convo: ConversationData, ignoreQuotes: boolean): Record<string, number> {
     const counts: Record<string, number> = {};
 
     for (const message of Object.values(convo.messages)) {
-        for (const username of extractUsernameMentions(message.body ?? "")) {
+        if (!message.bodyMarkdown) {
+            continue;
+        }
+        for (const username of extractUniqueUsernameMentions(ignoreQuotes ? removeQuotes(message.bodyMarkdown) : message.bodyMarkdown)) {
             counts[username] = (counts[username] ?? 0) + 1;
         }
     }
@@ -56,7 +64,12 @@ export async function runModmailMentions (reddit: RedditAPIClient, config: AppSe
         return;
     }
 
-    let modMentions = await findModeratorMentions(reddit, message.bodyMarkdown ?? "");
+    if (!message.bodyMarkdown) {
+        console.log(`runModmailMentions: Message in ${convo.id} has no body`);
+        return;
+    }
+
+    let modMentions = await findModeratorMentions(reddit, config.modmailMentionsNoQuotes ? removeQuotes(message.bodyMarkdown) : message.bodyMarkdown);
     if (!modMentions.length) {
         console.log("runModmailMentions: No mentions found");
         return;
@@ -74,7 +87,7 @@ export async function runModmailMentions (reddit: RedditAPIClient, config: AppSe
 
     // Filter out any mentions that have already been mentioned in the conversation
     if (config.modmailMentionsOnlyOnce) {
-        const counts = countUsernameMentions(convo);
+        const counts = countUsernameMentions(convo, config.modmailMentionsNoQuotes);
         modMentions = modMentions.filter(username => {
             // If the username has been mentioned more than once, that means this isn't the first mention.
             if (counts[username] && counts[username] > 1) {
@@ -91,6 +104,7 @@ export async function runModmailMentions (reddit: RedditAPIClient, config: AppSe
             continue;
         }
         try {
+            console.log(`runModmailMentions: Sending mention notification to ${username} for ${convo.id}/${message.id}`);
             await sendMentionNotification(reddit, username, getModmailPermalink(convo, message) ?? "https://mod.reddit.com/mail/all", message.author?.name);
         } catch (e) {
             console.error(`runModmailMentions: Failed to send mention notification for ${username} in ${convo.id}: ${String(e)}`);

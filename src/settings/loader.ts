@@ -18,6 +18,7 @@ export type RawAppSettings = {
     modmailMentionsEnabled?: boolean;
     modmailMentionsOnlyMods?: boolean;
     modmailMentionsOnlyOnce?: boolean;
+    modmailMentionsNoQuotes?: boolean;
 };
 
 export type AppSettings = {
@@ -37,6 +38,7 @@ export type AppSettings = {
     modmailMentionsEnabled: boolean;
     modmailMentionsOnlyMods: boolean;
     modmailMentionsOnlyOnce: boolean;
+    modmailMentionsNoQuotes: boolean;
 };
 
 export async function getAppSettings (settings: SettingsClient): Promise<AppSettings> {
@@ -59,6 +61,7 @@ export async function getAppSettings (settings: SettingsClient): Promise<AppSett
         modmailMentionsEnabled: rawSettings.modmailMentionsEnabled ?? SETTING_DEFAULTS.modmailMentionsEnabled,
         modmailMentionsOnlyMods: rawSettings.modmailMentionsOnlyMods ?? SETTING_DEFAULTS.modmailMentionsOnlyMods,
         modmailMentionsOnlyOnce: rawSettings.modmailMentionsOnlyOnce ?? SETTING_DEFAULTS.modmailMentionsOnlyOnce,
+        modmailMentionsNoQuotes: rawSettings.modmailMentionsNoQuotes ?? SETTING_DEFAULTS.modmailMentionsNoQuotes,
     };
 
     appSettings.highlighterUsernames.forEach(username => username.trim());

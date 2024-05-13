@@ -16,4 +16,5 @@ export const SETTING_DEFAULTS = {
     modmailMentionsEnabled: true,
     modmailMentionsOnlyMods: true,
     modmailMentionsOnlyOnce: false,
+    modmailMentionsNoQuotes: true,
 };
