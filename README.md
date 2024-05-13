@@ -15,6 +15,12 @@ ModmailAssistant is a Devvit app that provides a few useful Modmail-related tool
 
 This section summarizes the changes made for each published version of the app, unpublished versions are not listed, but you can always view the full changes to the code on [GitHub](https://github.com/PitchforkAssistant/devvit-modmail-assistant).
 
+### 0.1.4
+
+- Added an option to ignore modmail /u/-mentions if they are inside a quote block. Enabled by default.
+
+- Fixed an issue where manually running the archiver would never work due to an incorrect permission check.
+
 ### 0.1.3
 
-Fixed a bug that prevented the highlighter function from ever running.
+- Fixed a bug that prevented the highlighter function from ever running.
