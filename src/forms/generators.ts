@@ -15,7 +15,7 @@ export async function archiverFormButton (event: MenuItemOnPressEvent, context: 
 
     const user = await context.reddit.getUserById(userId);
     const subreddit = await context.reddit.getCurrentSubreddit();
-    if (!await hasPermissions(context.reddit, user.username, subreddit.name, "mail")) {
+    if (!await hasPermissions(context.reddit, {username: user.username, subredditName: subreddit.name, requiredPerms: "mail"})) {
         context.ui.showToast("You must have mail permissions to use this feature!");
         console.log(`archiverFormButton: ${user.username} doesn't have mail permissions`);
         return;
