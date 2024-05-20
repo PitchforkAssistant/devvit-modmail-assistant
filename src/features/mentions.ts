@@ -1,6 +1,6 @@
 import {ConversationData, RedditAPIClient} from "@devvit/public-api";
 import {AppSettings} from "../settings/loader.js";
-import {isModerator, getModmailPermalink} from "devvit-helpers";
+import {getModmailPermalink} from "devvit-helpers";
 
 // Based on testing, this regex should emulate the behavior of the Reddit username mentions in comments:
 // https://i.imgur.com/yMghWaB.png
@@ -26,9 +26,10 @@ export async function findModeratorMentions (reddit: RedditAPIClient, text: stri
         subredditName = (await reddit.getCurrentSubreddit()).name;
     }
 
+    const moderators: string[] = (await reddit.getModerators({subredditName}).all()).map(mod => mod.username.toLowerCase());
     const modMentions: string[] = [];
     for (const username of mentions) {
-        if (await isModerator(reddit, subredditName, username)) {
+        if (moderators.includes(username.toLowerCase())) {
             modMentions.push(username);
         }
     }
