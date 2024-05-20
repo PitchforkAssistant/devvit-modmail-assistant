@@ -26,7 +26,13 @@ export async function findModeratorMentions (reddit: RedditAPIClient, text: stri
         subredditName = (await reddit.getCurrentSubreddit()).name;
     }
 
-    return mentions.filter(async username => isModerator(reddit, (await reddit.getCurrentSubreddit()).name, username));
+    const modMentions: string[] = [];
+    for (const username of mentions) {
+        if (await isModerator(reddit, subredditName, username)) {
+            modMentions.push(username);
+        }
+    }
+    return modMentions;
 }
 
 export function countUsernameMentions (convo: ConversationData, ignoreQuotes: boolean): Record<string, number> {
@@ -70,6 +76,7 @@ export async function runModmailMentions (reddit: RedditAPIClient, config: AppSe
     }
 
     let modMentions = await findModeratorMentions(reddit, config.modmailMentionsNoQuotes ? removeQuotes(message.bodyMarkdown) : message.bodyMarkdown);
+    console.log(modMentions);
     if (!modMentions.length) {
         console.log("runModmailMentions: No mentions found");
         return;
