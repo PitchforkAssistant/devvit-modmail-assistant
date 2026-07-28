@@ -1,4 +1,4 @@
-import {SettingsClient} from "@devvit/public-api";
+import {settings} from "@devvit/web/server";
 import {SETTING_DEFAULTS} from "./defaults.js";
 
 export type RawAppSettings = {
@@ -19,6 +19,10 @@ export type RawAppSettings = {
     modmailMentionsOnlyMods?: boolean;
     modmailMentionsOnlyOnce?: boolean;
     modmailMentionsNoQuotes?: boolean;
+    modmailMentionsAllModsEnabled?: boolean;
+    modmailMentionsAllModsKeywords?: string;
+    modmailMentionsAllModsLimit?: number;
+    modmailMentionsAllModsExcluded?: string;
 };
 
 export type AppSettings = {
@@ -39,17 +43,25 @@ export type AppSettings = {
     modmailMentionsOnlyMods: boolean;
     modmailMentionsOnlyOnce: boolean;
     modmailMentionsNoQuotes: boolean;
+    modmailMentionsAllModsEnabled: boolean;
+    modmailMentionsAllModsKeywords: string[];
+    modmailMentionsAllModsLimit: number;
+    modmailMentionsAllModsExcluded: string[];
 };
 
-export async function getAppSettings (settings: SettingsClient): Promise<AppSettings> {
+function toTrimmedList (value: string): string[] {
+    return value.toLowerCase().split(",").map(entry => entry.trim()).filter(entry => entry.length > 0);
+}
+
+export async function getAppSettings (): Promise<AppSettings> {
     const rawSettings = await settings.getAll<RawAppSettings>();
 
-    const appSettings: AppSettings = {
+    return {
         highlighterEnabled: rawSettings.highlighterEnabled ?? SETTING_DEFAULTS.highlighterEnabled,
         highlighterAdmins: rawSettings.highlighterAdmins ?? SETTING_DEFAULTS.highlighterAdmins,
         highlighterContributors: rawSettings.highlighterContributors ?? SETTING_DEFAULTS.highlighterContributors,
-        highlighterUsernames: (rawSettings.highlighterUsernames ?? SETTING_DEFAULTS.highlighterUsernames).toLowerCase().split(","),
-        highlighterFlairs: (rawSettings.highlighterFlairs ?? SETTING_DEFAULTS.highlighterFlairs).toLowerCase().split(","),
+        highlighterUsernames: toTrimmedList(rawSettings.highlighterUsernames ?? SETTING_DEFAULTS.highlighterUsernames),
+        highlighterFlairs: toTrimmedList(rawSettings.highlighterFlairs ?? SETTING_DEFAULTS.highlighterFlairs),
         highlighterSubreddits: rawSettings.highlighterSubreddits ?? SETTING_DEFAULTS.highlighterSubreddits,
         highlighterNoSents: rawSettings.highlighterNoSents ?? SETTING_DEFAULTS.highlighterNoSents,
         highlighterNoAutoGens: rawSettings.highlighterNoAutoGens ?? SETTING_DEFAULTS.highlighterNoAutoGens,
@@ -62,10 +74,9 @@ export async function getAppSettings (settings: SettingsClient): Promise<AppSett
         modmailMentionsOnlyMods: rawSettings.modmailMentionsOnlyMods ?? SETTING_DEFAULTS.modmailMentionsOnlyMods,
         modmailMentionsOnlyOnce: rawSettings.modmailMentionsOnlyOnce ?? SETTING_DEFAULTS.modmailMentionsOnlyOnce,
         modmailMentionsNoQuotes: rawSettings.modmailMentionsNoQuotes ?? SETTING_DEFAULTS.modmailMentionsNoQuotes,
+        modmailMentionsAllModsEnabled: rawSettings.modmailMentionsAllModsEnabled ?? SETTING_DEFAULTS.modmailMentionsAllModsEnabled,
+        modmailMentionsAllModsKeywords: toTrimmedList(rawSettings.modmailMentionsAllModsKeywords ?? SETTING_DEFAULTS.modmailMentionsAllModsKeywords),
+        modmailMentionsAllModsLimit: rawSettings.modmailMentionsAllModsLimit ?? SETTING_DEFAULTS.modmailMentionsAllModsLimit,
+        modmailMentionsAllModsExcluded: toTrimmedList(rawSettings.modmailMentionsAllModsExcluded ?? SETTING_DEFAULTS.modmailMentionsAllModsExcluded),
     };
-
-    appSettings.highlighterUsernames.forEach(username => username.trim());
-    appSettings.highlighterFlairs.forEach(flair => flair.trim());
-
-    return appSettings;
 }

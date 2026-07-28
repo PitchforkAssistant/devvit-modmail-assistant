@@ -8,19 +8,20 @@
     "testSubreddit": "pitchforkassistant"
   },
   "scripts": {
+    "dev": "devvit playtest",
     "test": "npm run test:unit",
     "test:unit": "vitest --run",
-    "lint": "eslint . --ext .ts"
-  },
-  "dependencies": {
-    "@devvit/protos": "0.10.20",
-    "@devvit/public-api": "0.10.20",
-    "@devvit/shared-types": "0.10.20",
-    "devvit-helpers": "0.4.0-next.2"
+    "lint": "eslint . --ext .ts",
+    "build": "esbuild src/main.ts --bundle --platform=node --format=cjs --target=es2023 --outfile=dist/server/index.cjs --sourcemap=linked --log-level=warning",
+    "watch": "npm run build -- --watch=forever"
   },
   "devDependencies": {
+    "@devvit/web": "0.13.8",
+    "@types/node": "^22.20.1",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
+    "devvit": "0.13.8",
+    "esbuild": "^0.28.1",
     "eslint": "^8.57.0",
     "eslint-plugin-vitest": "^0.5.4",
     "typescript": "^5.4.5",
