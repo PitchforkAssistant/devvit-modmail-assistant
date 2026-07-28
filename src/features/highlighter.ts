@@ -1,7 +1,7 @@
-import {ConversationData, ModMailConversationState, RedditAPIClient} from "@devvit/public-api";
+import type {ConversationData, RedditClient} from "@devvit/web/server";
 import {AppSettings} from "../settings/loader.js";
 
-export async function runModmailHighlighter (reddit: RedditAPIClient, config: AppSettings, convo: ConversationData): Promise<boolean> {
+export async function runModmailHighlighter (reddit: RedditClient, config: AppSettings, convo: ConversationData): Promise<boolean> {
     if (!config.highlighterEnabled) {
         console.log("runModmailHighlighter: Highlighter is disabled");
         return false;
@@ -21,7 +21,7 @@ export async function runModmailHighlighter (reddit: RedditAPIClient, config: Ap
         console.log("runModmailHighlighter: Conversation is already highlighted");
         return false;
     }
-    if (convo.state === ModMailConversationState.Archived) {
+    if (String(convo.state) === "Archived") {
         console.log("runModmailHighlighter: Conversation is archived");
         return false;
     }

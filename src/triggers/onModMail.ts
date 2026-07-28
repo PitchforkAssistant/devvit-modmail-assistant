@@ -1,28 +1,32 @@
-import {ModMail} from "@devvit/protos";
-import {TriggerContext} from "@devvit/public-api";
+import {reddit} from "@devvit/web/server";
+import type {OnModMailRequest, TriggerResponse} from "@devvit/web/shared";
 import {getAppSettings} from "../settings/loader.js";
 import {runModmailHighlighter} from "../features/highlighter.js";
 import {runModmailMentions} from "../features/mentions.js";
 
-export async function onModMail (event: ModMail, context: TriggerContext) {
-    const config = await getAppSettings(context.settings);
+export async function onModMail (body: unknown): Promise<TriggerResponse> {
+    const event = body as OnModMailRequest;
+
+    const config = await getAppSettings();
     if (!config.highlighterEnabled && !config.modmailMentionsEnabled) {
-        return;
+        return {};
     }
 
     console.log(`onModMail: ${event.conversationId}/${event.messageId}`);
 
-    const convoResponse = await context.reddit.modMail.getConversation({conversationId: event.conversationId, markRead: false});
+    const convoResponse = await reddit.modMail.getConversation({conversationId: event.conversationId, markRead: false});
     if (!convoResponse || !convoResponse.conversation) {
         console.error(`onModMail: Failed to fetch ${event.conversationId}`);
-        return;
+        return {};
     }
 
     if (config.highlighterEnabled) {
-        await runModmailHighlighter(context.reddit, config, convoResponse.conversation);
+        await runModmailHighlighter(reddit, config, convoResponse.conversation);
     }
 
     if (config.modmailMentionsEnabled) {
-        await runModmailMentions(context.reddit, config, convoResponse.conversation, event.messageId);
+        await runModmailMentions(reddit, config, convoResponse.conversation, event.messageId);
     }
+
+    return {};
 }
